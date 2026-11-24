@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSA Notes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f6f9;--surface:#fff;--ink:#14213d;--muted:#5a6a85;--line:#d5dde8;--acc:#1d6fd8;--codebg:#eef2f7;--red:#d00000;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surface:#172033;--ink:#e6ecf7;--muted:#97a5bf;--line:#2a3752;--acc:#5aa2ff;--codebg:#1d2840;--red:#ff5c5c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1624;--surface:#172033;--ink:#e6ecf7;--muted:#97a5bf;--line:#2a3752;--acc:#5aa2ff;--codebg:#1d2840;--red:#ff5c5c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);background:var(--surface);padding:16px;position:sticky;top:0;height:100vh;overflow-y:auto;align-self:start}
+aside h2{margin:0 0 12px;font-size:1.25rem}
+main{padding:28px 24px 64px;max-width:860px;width:100%;min-width:0}
+.top{display:none}
+input,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+textarea{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;resize:vertical}
+button{font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+button.sm{padding:3px 10px;font-size:.82rem;font-weight:600}
+button.danger{color:var(--red);border-color:var(--red)}
+button.on{border-color:var(--acc);color:var(--acc)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.wide{width:100%;margin-top:8px}
+.ti{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:8px;font-weight:600}
+.ti.on{background:var(--codebg);color:var(--acc)}
+#list{margin-top:10px}
+.muted{color:var(--muted);font-size:.9rem}
+.status{background:var(--codebg);border-left:4px solid var(--acc);padding:8px 12px;border-radius:0 8px 8px 0;margin-bottom:16px;font-size:.92rem}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center}
+.sec{margin-bottom:26px}
+.sh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.sh h3{margin:0;font-size:1.15rem;flex:1;min-width:120px}
+.pt{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.pt.key{border-left:4px solid var(--red)}
+.pt p{margin:0 0 6px}.pt p:last-child{margin:0}
+.pt ul,.pt ol{margin:0 0 6px;padding-left:1.3em}
+.acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.rd{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--red);margin-right:8px;box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 22%,transparent)}
+code,pre{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88rem}
+code{background:var(--codebg);padding:1px 5px;border-radius:4px}
+pre{background:var(--codebg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:0;overflow-x:auto;line-height:1.5}
+.scroll{overflow-x:auto;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;min-width:480px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);font-size:.93rem;vertical-align:top}
+th{background:var(--codebg)}
+.form{background:var(--surface);border:1px dashed var(--acc);border-radius:10px;padding:12px;margin-bottom:8px}
+.form label{display:inline-flex;gap:6px;align-items:center;margin:8px 14px 8px 0;font-size:.92rem}
+.form label input{width:auto}
+.empty{padding:40px 0}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.dlg{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;max-width:400px;width:100%}
+.dlg h3{margin:0 0 8px}.dlg p{margin:0 0 16px;color:var(--muted)}
+@media (max-width:760px){
+ .app{display:block}
+ .top{display:flex;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
+ aside{display:none;position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+ aside.open{display:block}
+ main{padding:20px 16px 56px}
+}
+</style>
+</head>
+<body>
+<div class="top"><button data-act="menu">Topics</button><b>DSA Notes</b></div>
+<div class="app">
+<aside id="side"><h2>DSA Notes</h2><input id="q" placeholder="Search topics" aria-label="Search topics"><div id="list"></div><div id="newbox"></div><div id="tools"></div><input type="file" id="file" accept=".json,application/json" hidden></aside>
+<main id="main"></main>
+</div>
+<div id="dlg"></div>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+// Paste your Firebase web config here. Leave projectId empty to keep notes in this browser only.
+var FB={apiKey:"AIzaSyBbbk75JWqM1j9yyWFmqyoCJj1WvbrnARc",authDomain:"ayushk-dsa.firebaseapp.com",projectId:"ayushk-dsa",appId:"1:649989351608:web:2543a5a10f65179a746c4d"};
+var OWNER="ayushfl1011@gmail.com";// your Google email: only this account can edit
+var fb=!!FB.projectId&&window.firebase,user=null;
+var canEdit=function(){return !fb||!!user};
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var uid=function(){return Math.random().toString(36).slice(2,9)};
+var STD=['Trigger','Idea','Template','Complexity','Pitfalls','Problems'];
+var topics=[],cur=null,edit=false,keyOnly=false,db=null,status='Loading notes…',q='';
+var newTopic=false,adding=null,editing=null,renS=null,renT=false,addSec=false,armed=null,chain=Promise.resolve();
+var busy=function(){return newTopic||adding||editing||renS||renT||addSec};
+var reset=function(){adding=editing=renS=armed=null;renT=addSec=false};
+
+function persistLocal(){try{localStorage.setItem('dsa-notes',JSON.stringify(topics))}catch(e){}}
+function save(t){
+  t.updated=Date.now();
+  if(!db){persistLocal();return}
+  var body=JSON.parse(JSON.stringify(t));delete body.id;
+  chain=chain.then(function(){return db.collection('topics').doc(t.id).set(body)}).catch(function(e){status='Could not save: '+((e&&(e.message||e.code))||'unknown error');render()});
+}
+function removeTopic(id){
+  topics=topics.filter(function(t){return t.id!==id});
+  if(!db){persistLocal();return}
+  chain=chain.then(function(){return db.collection('topics').doc(id).delete()}).catch(function(){});
+}
+
+function inl(s){return esc(s).replace(/(https:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>')}
+function body(it){
+  if(it.type==='code')return '<pre>'+esc(it.text)+'</pre>';
+  var L=it.text.split('\n'),o=[],i=0,r;
+  while(i<L.length){
+    if(/^\s*\|/.test(L[i])){
+      r=[];while(i<L.length&&/^\s*\|/.test(L[i]))r.push(L[i++]);
+      var rows=r.filter(function(x){return !/^\s*\|[\s:|-]+\|?\s*$/.test(x)}).map(function(x){return x.trim().replace(/^\||\|$/g,'').split('|').map(function(c){return inl(c.trim())})});
+      o.push('<div class="scroll"><table>'+rows.map(function(c,k){return '<tr>'+c.map(function(x){return k?'<td>'+x+'</td>':'<th>'+x+'</th>'}).join('')+'</tr>'}).join('')+'</table></div>');
+    }else if(/^\s*-\s/.test(L[i])||/^\s*\d+\.\s/.test(L[i])){
+      var ord=/^\s*\d+\./.test(L[i]),re=ord?/^\s*\d+\.\s/:/^\s*-\s/;r=[];
+      while(i<L.length&&re.test(L[i]))r.push('<li>'+inl(L[i++].replace(re,''))+'</li>');
+      o.push((ord?'<ol>':'<ul>')+r.join('')+'</ul>'.replace('ul',ord?'ol':'ul'));
+    }else if(L[i].trim()===''){i++}
+    else o.push('<p>'+inl(L[i++])+'</p>');
+  }
+  return o.join('');
+}
+
+function form(kind,it){
+  it=it||{text:'',type:'text',key:false};
+  return '<div class="form"><textarea id="f-text" rows="5" placeholder="Write the point here">'+esc(it.text)+'</textarea>'+
+  '<div class="muted">Tips: start lines with | for tables, - for bullets, **bold**, `code`.</div>'+
+  '<label><input type="checkbox" id="f-code"'+(it.type==='code'?' checked':'')+'>Show as code</label>'+
+  '<label><input type="checkbox" id="f-key"'+(it.key?' checked':'')+'>Mark as key point</label>'+
+  '<div class="acts"><button class="primary sm" data-act="'+kind+'">Save</button><button class="sm" data-act="cancel">Cancel</button></div></div>';
+}
+function del(key,act,extra){
+  return armed===key?'<button class="sm danger" data-act="'+act+'" '+extra+'>Confirm delete</button>':'<button class="sm" data-act="arm" data-k="'+key+'">Delete</button>';
+}
+
+function renderTools(){
+  var h='';
+  if(fb)h+=user?'<button class="sm wide" data-act="signout">Sign out ('+esc(user.email)+')</button>':'<button class="sm wide" data-act="signin">Sign in to edit</button>';
+  h+='<button class="sm wide" data-act="exportall">Export all notes</button>';
+  if(canEdit())h+='<button class="sm wide" data-act="importb">Import notes</button>';
+  $('#tools').innerHTML=h;
+}
+function dl(name,obj){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}));a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000)}
+function pack(ts){return{app:'dsa-notes',version:1,topics:ts.map(function(t){return{name:t.name,sections:t.sections}})}}
+// Validate imported data: keep only known fields, fresh ids, type forced to text/code.
+function clean(x){
+  if(!x||typeof x.name!=='string'||!x.name.trim()||!Array.isArray(x.sections))return null;
+  return{id:uid(),name:x.name.trim(),created:Date.now(),sections:x.sections.filter(function(s){return s&&typeof s.title==='string'}).map(function(s){
+    return{id:uid(),title:s.title,items:(Array.isArray(s.items)?s.items:[]).filter(function(i){return i&&typeof i.text==='string'&&i.text.trim()}).map(function(i){return{id:uid(),text:i.text,type:i.type==='code'?'code':'text',key:i.key===true}})}})};
+}
+function renderList(){
+  renderTools();
+  var l=topics.filter(function(t){return t.name.toLowerCase().indexOf(q.toLowerCase())>-1});
+  $('#list').innerHTML=l.map(function(t){return '<button class="ti'+(t.id===cur?' on':'')+'" data-act="pick" data-t="'+t.id+'">'+esc(t.name)+'</button>'}).join('')||'<p class="muted">No topics yet.</p>';
+  $('#newbox').innerHTML=newTopic?'<div class="form"><input id="nt-name" placeholder="Topic name, e.g. Sliding Window"><label><input type="checkbox" id="nt-std" checked>Start with standard sections</label><div class="acts"><button class="primary sm" data-act="createt">Create</button><button class="sm" data-act="cancel">Cancel</button></div></div>':'<button class="primary wide" data-act="newt">+ New topic</button>';
+}
+
+function render(){
+  renderList();
+  var t=topics.find(function(x){return x.id===cur}),m=$('#main'),h=status?'<div class="status">'+esc(status)+'</div>':'';
+  if(!t){m.innerHTML=h+'<div class="empty"><h1>Your DSA notes</h1><p class="muted">Create a topic from the sidebar to start. Each topic holds sections, and each section holds points you can edit anytime.</p></div>';return}
+  h+=renT?'<div class="form"><input id="rt-name" value="'+esc(t.name)+'"><div class="acts"><button class="primary sm" data-act="savet">Save name</button><button class="sm" data-act="cancel">Cancel</button></div></div>':'<h1>'+esc(t.name)+'</h1>';
+  h+='<div class="bar">'+(canEdit()?'<button class="'+(edit?'primary':'')+'" data-act="edit">'+(edit?'Done editing':'Edit notes')+'</button>':'')+'<button class="'+(keyOnly?'on':'')+'" data-act="keyonly">'+(keyOnly?'Showing key points only':'Key points only')+'</button>';
+  h+='<button class="sm" data-act="exportt">Export topic</button>';if(edit)h+='<button class="sm" data-act="rent">Rename topic</button>'+'<button class="sm danger" data-act="delt">Delete topic</button>';
+  h+='</div>';
+  t.sections.forEach(function(s){
+    var items=s.items.filter(function(i){return !keyOnly||i.key});
+    if(keyOnly&&!items.length)return;
+    h+='<section class="sec"><div class="sh">';
+    h+=renS===s.id?'<input id="rs-name" value="'+esc(s.title)+'"><button class="primary sm" data-act="saves" data-s="'+s.id+'">Save</button><button class="sm" data-act="cancel">Cancel</button>':'<h3>'+esc(s.title)+'</h3>';
+    if(edit&&renS!==s.id)h+='<button class="sm" data-act="rens" data-s="'+s.id+'">Rename</button>'+del('s:'+s.id,'dels','data-s="'+s.id+'"');
+    h+='</div>';
+    if(!items.length&&!edit)h+='<p class="muted">Nothing here yet.</p>';
+    items.forEach(function(i){
+      var k=s.id+':'+i.id;
+      if(editing===k){h+=form('savee',i);return}
+      h+='<div class="pt'+(i.key?' key':'')+'">'+body(i);
+      if(edit)h+='<div class="acts"><button class="sm'+(i.key?' on':'')+'" data-act="keyp" data-s="'+s.id+'" data-i="'+i.id+'">'+(i.key?'Unmark key':'Mark key')+'</button><button class="sm" data-act="editp" data-s="'+s.id+'" data-i="'+i.id+'">Edit</button>'+del('p:'+k,'delp','data-s="'+s.id+'" data-i="'+i.id+'"')+'</div>';
+      h+='</div>';
+    });
+    if(edit)h+=adding===s.id?form('savep'):'<button class="sm" data-act="addp" data-s="'+s.id+'">+ Add point</button>';
+    h+='</section>';
+  });
+  if(edit)h+=addSec?'<div class="form"><input id="as-name" placeholder="Section name"><div class="acts"><button class="primary sm" data-act="saveas">Add section</button><button class="sm" data-act="cancel">Cancel</button></div></div>':'<button data-act="adds">+ Add section</button>';
+  m.innerHTML=h;
+}
+
+function sec(t,id){return t.sections.find(function(s){return s.id===id})}
+var pend=null;
+function closeDlg(){pend=null;$('#dlg').innerHTML=''}
+function ask(title,msg,ok,fn,danger){pend=fn;$('#dlg').innerHTML='<div class="ov" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="dlg"><h3>'+esc(title)+'</h3><p>'+esc(msg)+'</p><div class="acts" style="justify-content:flex-end"><button data-act="dno">Cancel</button><button class="'+(danger?'danger':'primary')+'" data-act="dyes" id="dyes">'+esc(ok)+'</button></div></div></div>';$('#dyes').focus()}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.dataset.act,t=topics.find(function(x){return x.id===cur}),s=t&&sec(t,b.dataset.s||adding||(editing&&editing.split(':')[0])),v;
+  if(a==='menu'){$('#side').classList.toggle('open');return}
+  if(a==='dno'){closeDlg();return}
+  if(a==='signin'){firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(e){status='Sign-in failed: '+e.code;render()});return}
+  if(a==='signout'){firebase.auth().signOut();return}
+  if(a==='exportall'){dl('dsa-notes-backup.json',pack(topics));return}
+  if(a==='exportt'&&t){dl(t.name.replace(/[^\w-]+/g,'-').toLowerCase()+'.json',pack([t]));return}
+  if(a==='importb'){$('#file').click();return}
+  if(a==='dyes'){var f=pend;closeDlg();if(f)f();render();return}
+  if(a==='pick'){cur=b.dataset.t;edit=false;reset();$('#side').classList.remove('open')}
+  else if(a==='newt'){newTopic=true}
+  else if(a==='createt'){
+    var n=$('#nt-name').value.trim();if(!n)return;
+    var nt={id:uid(),name:n,created:Date.now(),sections:$('#nt-std').checked?STD.map(function(x){return{id:uid(),title:x,items:[]}}):[]};
+    topics.push(nt);cur=nt.id;newTopic=false;edit=true;save(nt);
+  }
+  else if(a==='cancel'){newTopic=false;reset()}
+  else if(a==='edit'){edit=!edit;reset()}
+  else if(a==='keyonly'){keyOnly=!keyOnly}
+  else if(a==='arm'){armed=b.dataset.k}
+  else if(a==='rent'){renT=true}
+  else if(a==='savet'){v=$('#rt-name').value.trim();if(!v)return;ask('Rename topic?','Rename “'+t.name+'” to “'+v+'”?','Rename',function(){t.name=v;save(t);renT=false});return}
+  else if(a==='delt'){ask('Delete topic?','“'+t.name+'” and all its sections and points will be permanently deleted. This cannot be undone.','Delete topic',function(){removeTopic(t.id);cur=topics[0]&&topics[0].id;edit=false;reset()},true);return}
+  else if(a==='adds'){addSec=true}
+  else if(a==='saveas'){v=$('#as-name').value.trim();if(v){t.sections.push({id:uid(),title:v,items:[]});save(t)}addSec=false}
+  else if(a==='rens'){renS=b.dataset.s}
+  else if(a==='saves'){v=$('#rs-name').value.trim();if(!v)return;ask('Rename section?','Rename “'+s.title+'” to “'+v+'”?','Rename',function(){s.title=v;save(t);renS=null});return}
+  else if(a==='dels'){t.sections=t.sections.filter(function(x){return x.id!==b.dataset.s});save(t);armed=null}
+  else if(a==='addp'){reset();adding=b.dataset.s}
+  else if(a==='savep'){v=$('#f-text').value.trim();if(v){s.items.push({id:uid(),text:v,type:$('#f-code').checked?'code':'text',key:$('#f-key').checked});save(t)}adding=null}
+  else if(a==='editp'){reset();editing=b.dataset.s+':'+b.dataset.i}
+  else if(a==='savee'){
+    v=$('#f-text').value.trim();var it=s.items.find(function(x){return x.id===b.dataset.i})||s.items.find(function(x){return editing===s.id+':'+x.id});
+    if(!v||!it)return;
+    var nv={text:v,type:$('#f-code').checked?'code':'text',key:$('#f-key').checked};
+    ask('Save changes?','Your edited version will replace the existing point.','Save changes',function(){it.text=nv.text;it.type=nv.type;it.key=nv.key;save(t);editing=null});return;
+  }
+  else if(a==='keyp'){var k=s.items.find(function(x){return x.id===b.dataset.i});k.key=!k.key;save(t)}
+  else if(a==='delp'){s.items=s.items.filter(function(x){return x.id!==b.dataset.i});save(t);armed=null}
+  render();
+});
+$('#q').addEventListener('input',function(e){q=e.target.value;renderList()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&pend)closeDlg()});
+
+$('#file').addEventListener('change',function(e){
+  var f=e.target.files[0];e.target.value='';if(!f||!canEdit())return;
+  f.text().then(function(txt){
+    var d=JSON.parse(txt),arr=Array.isArray(d.topics)?d.topics:[d],ok=arr.map(clean).filter(Boolean);
+    if(!ok.length)throw 0;
+    ok.forEach(function(n,k){var base=n.name,c=2;n.created+=k;while(topics.some(function(x){return x.name.toLowerCase()===n.name.toLowerCase()}))n.name=base+' ('+(c++)+')';topics.push(n);save(n);cur=n.id});
+    edit=false;reset();status='';render();
+  }).catch(function(){status='That file is not a valid DSA Notes file.';render()});
+});
+(function(){
+  if(fb){
+    firebase.initializeApp(FB);db=firebase.firestore();
+    firebase.auth().onAuthStateChanged(function(u){
+      user=u&&u.email===OWNER?u:null;
+      if(u&&!user){firebase.auth().signOut();status='That Google account is not allowed to edit.'}
+      if(!user)edit=false;render();
+    });
+    var tm=setTimeout(function(){status='Saved notes can’t be reached yet. Showing what is loaded.';render()},10000);
+    db.collection('topics').onSnapshot(function(snap){
+      clearTimeout(tm);status='';
+      topics=snap.docs.map(function(d){var o=d.data();o.id=d.id;return o}).sort(function(x,y){return (x.created||0)-(y.created||0)});
+      if(!cur||!topics.some(function(x){return x.id===cur}))cur=topics[0]&&topics[0].id;
+      if(!busy())render();
+    },function(err){status='Could not load saved notes ('+err.code+').';render()});
+  }else{
+    status='Cloud sync is off. Notes are kept in this browser only. Use Export to back up.';
+    try{topics=JSON.parse(localStorage.getItem('dsa-notes')||'[]')}catch(e){topics=[]}
+    cur=topics[0]&&topics[0].id;
+  }
+  render();
+})();
+render();
+})();
+</script>
+</body>
+</html>
